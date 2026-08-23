@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07152b">
+  <meta name="description" content="Sodegau-Ride — 袖ケ浦の移動と自動運転を、わかりやすく可視化する市民向けプロトタイプ。">
+  <title>Sodegau-Ride｜袖ケ浦のモビリティ</title>
+  <style>
+    :root{--bg:#07152b;--bg2:#0d2344;--card:rgba(255,255,255,.08);--line:rgba(255,255,255,.14);--text:#f7fbff;--muted:#b6c7da;--cyan:#5ee7ff;--green:#64f0ad;--accent:#7aa7ff;--shadow:0 24px 70px rgba(0,0,0,.34)}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:Inter,"Noto Sans JP",system-ui,-apple-system,sans-serif;color:var(--text);background:radial-gradient(circle at 15% 0%,#163a6c 0,transparent 34%),radial-gradient(circle at 90% 20%,#0c5f63 0,transparent 28%),linear-gradient(180deg,var(--bg),#06101f 70%);min-height:100vh}
+    a{color:inherit} .wrap{width:min(1120px,calc(100% - 32px));margin:auto}.nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);background:rgba(7,21,43,.72);border-bottom:1px solid var(--line)}
+    .navin{height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:11px;font-weight:900}.logo{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--cyan),var(--accent));color:#07152b;box-shadow:0 8px 28px rgba(94,231,255,.25)}
+    .mini{font-size:11px;color:var(--muted);font-weight:600}.nav a.btn,.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;padding:11px 16px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);font-weight:800}.btn.primary{background:linear-gradient(135deg,var(--cyan),var(--green));color:#062038;border:none}
+    .hero{padding:84px 0 50px;display:grid;grid-template-columns:1.25fr .75fr;gap:28px;align-items:center}.eyebrow{display:inline-flex;padding:7px 11px;border-radius:999px;background:rgba(94,231,255,.1);border:1px solid rgba(94,231,255,.25);color:#bff7ff;font-size:12px;font-weight:800;letter-spacing:.06em}
+    h1{font-size:clamp(46px,8vw,90px);line-height:.94;letter-spacing:-.06em;margin:18px 0}.grad{background:linear-gradient(90deg,#fff,var(--cyan),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}.lead{font-size:clamp(17px,2vw,21px);line-height:1.8;color:var(--muted);max-width:720px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+    .orb{aspect-ratio:1;border-radius:32px;background:linear-gradient(145deg,rgba(94,231,255,.18),rgba(122,167,255,.06));border:1px solid var(--line);box-shadow:var(--shadow);display:grid;place-items:center;position:relative;overflow:hidden}.road{width:74%;height:18%;border-radius:999px;background:#0b1728;transform:rotate(-18deg);position:relative;box-shadow:0 0 0 2px rgba(255,255,255,.08) inset}.road:after{content:"";position:absolute;left:8%;right:8%;top:50%;border-top:3px dashed rgba(255,255,255,.55)}.bus{position:absolute;width:82px;height:45px;border-radius:13px;background:linear-gradient(135deg,#fff,var(--cyan));left:47%;top:42%;transform:translate(-50%,-50%) rotate(-18deg);box-shadow:0 12px 30px rgba(94,231,255,.28)}.bus:before,.bus:after{content:"";position:absolute;bottom:-8px;width:16px;height:16px;border-radius:50%;background:#07111f}.bus:before{left:12px}.bus:after{right:12px}
+    section{padding:36px 0}.kicker{color:var(--green);font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.section-title{font-size:clamp(28px,4vw,44px);margin:8px 0 20px;letter-spacing:-.04em}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{padding:22px;border-radius:22px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow)}.card .icon{font-size:28px}.card h3{margin:12px 0 8px}.card p{margin:0;color:var(--muted);line-height:1.7;font-size:14px}
+    .status{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{padding:20px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.045)}.stat b{display:block;font-size:27px}.stat span{color:var(--muted);font-size:12px}.links{display:grid;grid-template-columns:1fr 1fr;gap:12px}.linkcard{text-decoration:none;padding:18px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.05);transition:.2s}.linkcard:hover{transform:translateY(-2px);background:rgba(255,255,255,.08)}.linkcard small{display:block;color:var(--muted);margin-top:6px}
+    footer{padding:40px 0 56px;color:#7f95ad;font-size:12px;line-height:1.8;border-top:1px solid var(--line);margin-top:38px}
+    @media(max-width:800px){.hero{grid-template-columns:1fr;padding-top:56px}.orb{max-width:420px;width:100%;margin:auto}.grid{grid-template-columns:1fr}.status{grid-template-columns:1fr 1fr}.links{grid-template-columns:1fr}.nav .btn{display:none}}
+  </style>
+</head>
+<body>
+  <header class="nav"><div class="wrap navin"><div class="brand"><div class="logo">SR</div><div>Sodegau-Ride<div class="mini">袖ケ浦のモビリティ</div></div></div><a class="btn" href="#official">公式情報を見る</a></div></header>
+  <main class="wrap">
+    <section class="hero">
+      <div><span class="eyebrow">SODEGAURA × AUTONOMOUS MOBILITY</span><h1><span class="grad">移動を、もっと<br>身近に。</span></h1><p class="lead">Sodegau-Ride は、袖ケ浦市の自動運転バスや地域交通を、市民目線でわかりやすく可視化・比較・検討するための公開プロトタイプです。</p><div class="actions"><a class="btn primary" href="#vision">プロジェクトを見る</a><a class="btn" href="#official">袖ケ浦市の公式情報</a></div></div>
+      <div class="orb" aria-label="自動運転バスのイメージ"><div class="road"></div><div class="bus"></div></div>
+    </section>
+
+    <section id="vision"><div class="kicker">Vision</div><h2 class="section-title">地域交通を「見える・比べる・考える」</h2><div class="grid">
+      <article class="card"><div class="icon">🚌</div><h3>自動運転を見える化</h3><p>実証・運行・安全性・利用状況などを、市民にも理解しやすい形で整理します。</p></article>
+      <article class="card"><div class="icon">📊</div><h3>KPIで比較</h3><p>乗車人数、運行頻度、コスト、受容性など、公開情報をもとに比較できる形を目指します。</p></article>
+      <article class="card"><div class="icon">🧭</div><h3>地域交通をつなぐ</h3><p>鉄道・路線バス・デマンド交通・自動運転などを、単体ではなく移動全体として考えます。</p></article>
+    </div></section>
+
+    <section><div class="kicker">Prototype</div><h2 class="section-title">Sodegau-Ride 0.1</h2><div class="status"><div class="stat"><b>PUBLIC</b><span>GitHub公開</span></div><div class="stat"><b>HTML</b><span>静的サイト</span></div><div class="stat"><b>Mobile</b><span>スマホ対応</span></div><div class="stat"><b>OPEN</b><span>継続改善</span></div></div></section>
+
+    <section id="official"><div class="kicker">Official Sources</div><h2 class="section-title">袖ケ浦市の公式情報</h2><div class="links">
+      <a class="linkcard" href="https://www.city.sodegaura.lg.jp/site/autonomousbus/" target="_blank" rel="noopener"><strong>自動運転バス特設ページ ↗</strong><small>袖ケ浦市公式ホームページ</small></a>
+      <a class="linkcard" href="https://www.city.sodegaura.lg.jp/site/autonomousbus/autonomousbusbriefingsession2.html" target="_blank" rel="noopener"><strong>自動運転バス説明会 ↗</strong><small>袖ケ浦市公式ホームページ</small></a>
+    </div></section>
+  </main>
+  <footer><div class="wrap">2026年08月23日 19:00 JST<br>このサイトは市民による非公式プロトタイプです。行政機関の公式見解・公式サービスではありません。最新情報・正式情報は袖ケ浦市公式ホームページをご確認ください。</div></footer>
+</body>
+</html>
