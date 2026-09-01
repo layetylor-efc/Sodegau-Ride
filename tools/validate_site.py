@@ -28,7 +28,7 @@ else:
         errors.append('siteSearch IDが一意ではありません')
     if s.count('role="tab"') != 3:
         errors.append('固定3タブの数が3ではありません')
-    subs = re.findall(r'"subs":\[(.*?)\]', s)
+    subs = re.findall(r'\bsubs\s*:\s*\[(.*?)\]', s, re.S)
     if len(subs) != 8:
         errors.append(f'行政大分類が8件ではありません: {len(subs)}')
     for phrase in ['市民入力','AI整理','担当課','行政処理','KPI更新','政策改善','Twin更新']:
