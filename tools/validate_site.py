@@ -1,6 +1,6 @@
 from pathlib import Path
 from html.parser import HTMLParser
-import json,re,sys
+import json,re,sys,subprocess,shutil
 errors=[]
 required_files=['index.html','app.js','cityhall.html','cityhall.js','offline.html','manifest.webmanifest','sw.js','icon.svg','.nojekyll']
 for f in required_files:
@@ -27,7 +27,7 @@ def audit_html(path):
     return text
 if Path('index.html').exists():
     s=audit_html('index.html')
-    tokens=['v0.5.0','data-view="admin"','data-view="needs"','data-view="dx"','role="tabpanel"','id="siteSearch"','id="emptyState"','id="aiInput"','AI市政コンシェルジュ','AIルーター','SodeMap Digital Twin','2035年の袖ケ浦を見る','未来予測の注意','市民入力','AI整理','担当課','行政処理','KPI更新','市民へ回答','政策改善','Twin更新','Accessibility Mode','低速回線モード','災害時モード','id="emergencyPanel"','id="networkStatus"','id="layerReset"','id="updateNotice"','aria-pressed="true"','./cityhall.html','./app.js','Updated 2026-09-02']
+    tokens=['v0.5.0','data-view="admin"','data-view="needs"','data-view="dx"','role="tabpanel"','id="siteSearch"','id="emptyState"','id="aiInput"','AI市政コンシェルジュ','AIルーター','SodeMap Digital Twin','2035年の袖ケ浦を見る','未来予測の注意','市民入力','AI整理','担当課','行政処理','KPI更新','市民へ回答','政策改善','Twin更新','Accessibility Mode','低速回線モード','災害時モード','id="emergencyPanel"','id="networkStatus"','id="layerReset"','id="updateNotice"','./cityhall.html','./app.js','Updated 2026-09-02']
     for t in tokens:
         if t not in s:errors.append(f'index必須要素不足: {t}')
     if s.count('role="tab"')!=3:errors.append('固定3タブが3件ではありません')
@@ -37,12 +37,12 @@ if Path('index.html').exists():
         if f'data-layer="{layer}"' not in s:errors.append(f'Twinレイヤー不足: {layer}')
 if Path('app.js').exists():
     a=Path('app.js').read_text(encoding='utf-8')
-    tokens=['safeStore','routeMatches','applySearch','ArrowLeft','ArrowRight','setEmergency','emergencyPanel','navigator.onLine','questKey','layerReset','aria-pressed','updatefound','controllerchange','escapeHtml','serviceWorker']
+    tokens=['safeStore','normalize(\'NFKC\')' if False else "normalize('NFKC')",'expandTerms','synonymGroups','routeMatches','alternatives','searchMatch','arrowGroup','setEmergency','emergencyPanel','localDateKey','getFullYear()','sr-layers','sr-zone','sr-year','sr-scenario','syncStateUrl','URLSearchParams','history.replaceState','showUpdate','reg.waiting','SKIP_WAITING','controllerchange','navigator.onLine','escapeHtml','serviceWorker']
     for t in tokens:
         if t not in a:errors.append(f'app.js 改善機能不足: {t}')
     subs=re.findall(r'\bsubs\s*:\s*\[(.*?)\]',a,re.S)
     if len(subs)!=8:errors.append(f'行政大分類が8件ではありません: {len(subs)}')
-    if "sr-quest-'" not in a and "sr-quest-" not in a:errors.append('日次クエスト重複防止がありません')
+    if "toISOString().slice(0,10)" in a:errors.append('クエスト日付にUTC判定が残っています')
 if Path('cityhall.html').exists():
     c=audit_html('cityhall.html')
     for t in ['v0.5.0','中庁舎1F','北庁舎1F','北庁舎5F','2～4階','data-purpose="転入・住民票"','data-purpose="税"','data-purpose="福祉"','data-purpose="議会"','data-floor="5F"','data-building="北庁舎"','状態リンクをコピー','正式要件','庁舎AI案内','./cityhall.js','Updated 2026-09-02']:
@@ -50,7 +50,7 @@ if Path('cityhall.html').exists():
     if c.count('data-pin=')<4:errors.append('cityhall地点ピンが4件未満')
 if Path('cityhall.js').exists():
     cj=Path('cityhall.js').read_text(encoding='utf-8')
-    for t in ['URLSearchParams','history.replaceState','buildings.includes','floors.includes','navigator.clipboard','document.execCommand','aria-pressed','esc']:
+    for t in ['URLSearchParams','history.replaceState','buildings.includes','floors.includes','navigator.share','navigator.clipboard','document.execCommand','aria-pressed','bindArrow','mismatch()','推奨位置と現在の選択が異なります','esc']:
         if t not in cj:errors.append(f'cityhall.js 状態共有/防御不足: {t}')
 if Path('manifest.webmanifest').exists():
     try:
@@ -64,15 +64,24 @@ if Path('sw.js').exists():
     sw=Path('sw.js').read_text(encoding='utf-8')
     for t in ['./index.html','./app.js','./cityhall.html','./cityhall.js','./offline.html','./manifest.webmanifest','./icon.svg']:
         if t not in sw:errors.append(f'SW shell不足: {t}')
-    for t in ["url.origin!==self.location.origin","req.mode==='navigate'","caches.match('./offline.html')","res.type==='basic'","sodegau-ride-v050"]:
+    for t in ["url.origin!==self.location.origin","req.mode==='navigate'","caches.match('./offline.html')","sodegau-ride-v051",'CACHEABLE_PATHS','normalizedNavigationRequest',"u.search=''",'SKIP_WAITING','event.waitUntil']:
         if t not in sw:errors.append(f'SW安全要件不足: {t}')
     if "caches.match('./index.html')" in sw:errors.append('旧index誤フォールバックが残っています')
+    if 'c.put(req' in sw:errors.append('クエリ付きrequestを直接キャッシュする旧処理が残っています')
 if Path('offline.html').exists():
     o=audit_html('offline.html')
     for t in ['オフラインです','災害時','保存済み市庁舎Twin','再接続を試す']:
         if t not in o:errors.append(f'offline案内不足: {t}')
+node=shutil.which('node')
+if node:
+    for js in ['app.js','cityhall.js','sw.js']:
+        if Path(js).exists():
+            p=subprocess.run([node,'--check',js],capture_output=True,text=True)
+            if p.returncode:errors.append(f'{js} JavaScript構文エラー: {p.stderr.strip()}')
+else:
+    errors.append('node が見つからずJavaScript構文検査を実行できません')
 if errors:
     print('VALIDATION FAILED')
     for e in errors:print('-',e)
     sys.exit(1)
-print('VALIDATION PASSED: v0.5.0 ten-improvement gate, UX, accessibility, state, PWA, offline and cityhall invariants satisfied')
+print('VALIDATION PASSED: v0.5 hardening gate; local-date quest, fuzzy search, shared twin/future state, bounded PWA cache, cityhall consistency and JS syntax are satisfied')
