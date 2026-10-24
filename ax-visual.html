@@ -79,19 +79,53 @@ button,input,a{font:inherit}button{cursor:pointer}a{color:inherit}a:focus-visibl
 @media(max-width:640px){.hero{min-height:360px}.hero-copy{padding:22px 16px 150px}.speech{left:15px;bottom:10px}.guide{right:6px}.icon-grid{gap:7px}.tile{min-height:100px;padding:10px 3px}.summary-grid{grid-template-columns:1fr 1fr}.trip-cards{grid-template-columns:1fr}.voice-steps{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:375px){.icon-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.tile strong{font-size:.71em}.tile span{font-size:1.6em}.brand{font-size:1.16em}.headtools a{font-size:.7em;padding:6px}.hero-copy{padding-bottom:155px}.ai-search{flex-direction:column}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+
+/* Original mockup assets + accessible, clickable overlays, separated from illustration pixels */
+.reference-section{margin:0 auto 18px;max-width:100%;display:grid;gap:12px}
+.reference-photo{margin:0 auto;position:relative;width:min(100%,570px);overflow:hidden;border-radius:23px;background:#b1ddff;box-shadow:0 18px 42px #062d7052;border:2px solid #ffffffaf;isolation:isolate}
+.reference-photo img{display:block;width:100%;height:auto;vertical-align:middle}
+.reference-photo a.hotspot{display:block;position:absolute;z-index:4;background:transparent;border:2px solid transparent;border-radius:12px;text-decoration:none;touch-action:manipulation}
+.reference-photo a.hotspot:focus-visible{outline:4px solid #ffed61;outline-offset:-4px;background:#fff4}
+.reference-photo a.hotspot:hover{border-color:#fcdf5999;background:#fffc6b20}
+.reference-description{max-width:570px;margin:auto;width:100%;background:#fffffff0;padding:13px 15px;border-radius:16px;color:#184677;border:1px solid #c5e3ff}
+.reference-description strong{display:block;font-size:.97em}.reference-description p{margin:3px 0 8px;font-size:.79em}
+.reference-description .image-links{display:flex;gap:8px;flex-wrap:wrap}
+.reference-description .image-links a{min-height:40px;display:inline-flex;align-items:center;border-radius:999px;padding:7px 12px;background:#0b60ca;color:white;text-decoration:none;font-size:.81em;font-weight:850}
+.concept-image{margin:12px auto 0}.concept-image .reference-photo{max-width:570px}
+.concept-key{margin-top:10px;font-size:.82em;color:#466585}
+@media(min-width:900px){.reference-section{grid-template-columns:minmax(0,1fr) minmax(270px,.7fr);align-items:center;gap:24px}.reference-photo{width:min(100%,520px)}.reference-description{width:100%;padding:23px}.reference-description strong{font-size:1.2em}.reference-description p{font-size:.93em}}
+@media(max-width:450px){.reference-photo{border-radius:15px}.reference-description{border-radius:14px}.reference-photo a.hotspot{border-radius:8px}}
 </style>
 </head>
 <body>
 <div class="notice"><b>⚠ 非公式・個人制作／デザイン検証版</b>　袖ケ浦市・交通事業者による公式サービスではありません。時刻・運賃は必ず公式情報で確認してください。</div>
 <div class="shell" id="top">
 <header class="mainheader"><div class="brand"><img src="./icon.svg" alt="">Sodegau-Ride <span class="sr-only">ビジュアル版</span></div><div class="headtools"><a href="./">既存の都市OS ↗</a><a href="#search">検索</a></div></header>
-<section class="hero" aria-labelledby="heroTitle">
-<svg class="sky" viewBox="0 0 980 360" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#4391c4"/><stop offset="1" stop-color="#07376b"/></linearGradient></defs><rect y="275" width="980" height="85" fill="url(#ocean)"/><path d="M0 250L54 250V194h20v56h28v-38h39v38h32v-95h17v95h45v-70h42v70h40v-24h35v24h22v-135h21v135h44v-51h62v51h27v-93h32v93h38v-30h39v30h21v-118h16v118h55v-59h46v59h43v-81h19v81h64v-43h55v43h43v-95h15v95h40v-31h47v31h48v110H0z" fill="#174377" opacity=".7"/><g fill="#fef2a4" opacity=".75"><rect x="192" y="200" width="3" height="7"/><rect x="264" y="200" width="3" height="7"/><rect x="398" y="212" width="3" height="7"/><rect x="504" y="200" width="3" height="7"/><rect x="711" y="220" width="3" height="7"/><rect x="839" y="235" width="3" height="7"/></g><path d="M0 301Q320 275 550 305T980 299" stroke="#ffca7f" fill="none" stroke-width="4" opacity=".6"/><path d="M0 320Q280 299 600 326T980 313" stroke="#a5d5ff" fill="none" stroke-width="3" opacity=".45"/></svg>
-<div class="hero-copy"><div class="hero-kicker">AI × 市民 × まちの未来</div><h1 id="heroTitle">AIでつながる、<br>もっと暮らしやすい<br>袖ケ浦へ。</h1><p>ごみ・防災・交通・手続き。<br>知りたいことへ、迷わず3タップ。</p></div>
-<div class="guide" aria-hidden="true"><svg viewBox="0 0 245 300" role="presentation"><defs><linearGradient id="hair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#252c58"/><stop offset=".65" stop-color="#47415d"/><stop offset="1" stop-color="#716578"/></linearGradient><linearGradient id="coat" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eff6ff"/><stop offset="1" stop-color="#778bbf"/></linearGradient></defs><path d="M37 214Q-4 245 0 300H244Q248 236 185 211L144 193z" fill="url(#coat)" stroke="#192c65" stroke-width="4"/><path d="M80 190L115 242 144 192 154 274H75z" fill="#15224b"/><ellipse cx="116" cy="132" rx="101" ry="113" fill="url(#hair)" stroke="#252445" stroke-width="5"/><ellipse cx="124" cy="148" rx="76" ry="83" fill="#fbe2ce"/><path d="M42 105Q56 4 145 18T202 118Q174 97 161 64Q120 103 67 91z" fill="url(#hair)"/><ellipse cx="93" cy="147" rx="14" ry="20" fill="#6dc6ff" stroke="#14336b" stroke-width="5"/><ellipse cx="157" cy="147" rx="14" ry="20" fill="#6dc6ff" stroke="#14336b" stroke-width="5"/><circle cx="89" cy="144" r="5" fill="white"/><circle cx="153" cy="144" r="5" fill="white"/><g fill="none" stroke="#23345d" stroke-width="5"><circle cx="93" cy="145" r="29"/><circle cx="157" cy="145" r="29"/><path d="M122 141h6M64 139L40 129M187 141l23-10"/></g><path d="M111 185Q132 208 154 181" fill="#b63b55" stroke="#942943" stroke-width="3"/><path d="M108 201v17M151 200v18" stroke="#e7b8a5" stroke-width="6"/><path d="M57 107Q79 118 104 93M114 81Q167 130 196 91" stroke="#373b60" stroke-width="24" fill="none" stroke-linecap="round"/><path d="M24 253Q57 213 80 239" fill="none" stroke="#d9f4ff" stroke-width="16"/><circle cx="174" cy="270" r="9" fill="#09b8ec"/></svg></div>
-<div class="speech">こんにちは！<br>まちの案内はおまかせ♪</div>
+<section class="reference-section" aria-labelledby="heroTitle">
+  <div class="reference-photo" id="mockupPhoto">
+    <img src="./assets/ax-smartphone-reference.png" alt="Sodegaura-AXのスマートフォン版デザインイメージ。夕焼けの港を背景に案内キャラクター、8つの生活メニュー、AI案内とよく使う1タップを描いた参考イラスト。" width="941" height="1672" fetchpriority="high" decoding="async">
+    <a class="hotspot" href="#search" data-query="ごみ" aria-label="画像のごみボタン：ごみ情報へ" style="left:16.1%;top:51%;width:16%;height:9.5%"></a>
+    <a class="hotspot" href="#search" data-query="防災" aria-label="画像の防災ボタン：防災情報へ" style="left:33.1%;top:51%;width:16%;height:9.5%"></a>
+    <a class="hotspot" href="#search" data-query="子育て" aria-label="画像の子育てボタン：子育て情報へ" style="left:50%;top:51%;width:16%;height:9.5%"></a>
+    <a class="hotspot" href="#search" data-query="手続き" aria-label="画像の手続きボタン：手続き案内へ" style="left:67%;top:51%;width:16%;height:9.5%"></a>
+    <a class="hotspot" href="#search" data-query="医療" aria-label="画像の病院・健康ボタン：医療情報へ" style="left:16.1%;top:60.7%;width:16%;height:9.4%"></a>
+    <a class="hotspot" href="#mobility" aria-label="画像の交通ボタン：交通情報へ" style="left:33.1%;top:60.7%;width:16%;height:9.4%"></a>
+    <a class="hotspot" href="#search" data-query="高齢者" aria-label="画像の高齢者支援ボタン：高齢者情報へ" style="left:50%;top:60.7%;width:16%;height:9.4%"></a>
+    <a class="hotspot" href="#news" aria-label="画像の市からのお知らせボタン：公式お知らせへ" style="left:67%;top:60.7%;width:16%;height:9.4%"></a>
+    <a class="hotspot" href="#search" aria-label="画像の市政コンシェルジュ欄：検索する" style="left:17%;top:71%;width:65%;height:6%"></a>
+    <a class="hotspot" href="#search" data-query="ごみ" aria-label="よく使う1タップ：ごみ分別" style="left:16.5%;top:82.4%;width:22%;height:5.5%"></a>
+    <a class="hotspot" href="#search" data-query="医療" aria-label="よく使う1タップ：休日当番医" style="left:39%;top:82.4%;width:25%;height:5.5%"></a>
+    <a class="hotspot" href="#search" data-query="防災" aria-label="よく使う1タップ：防災情報" style="left:65%;top:82.4%;width:22%;height:5.5%"></a>
+  </div>
+  <div class="reference-description"><h1 id="heroTitle" style="margin:0 0 8px;font-size:clamp(1.3em,4vw,2em);line-height:1.24">AIでつながる、<br>暮らしやすい袖ケ浦へ</h1>
+    <strong>スマホ表示イメージを操作できます</strong>
+    <p>参考イラストの生活メニューや検索エリアをタップすると、下の実際の機能へ移動します。画像に含まれる文字は装飾であり、実際の検索・交通データは別のUIで提供します。</p>
+    <div class="image-links"><a href="#services">生活8カテゴリへ ↓</a><a href="#search">AI案内へ ↓</a><a href="#mobility">交通・バスへ ↓</a></div>
+    <p style="margin-top:12px">※非公式デザイン。描かれた建物・人物・UIはコンセプトです。</p>
+  </div>
 </section>
-<nav class="jumprow" aria-label="ページ内ジャンプ"><a href="#services">生活8カテゴリ</a><a href="#search">AI案内</a><a href="#mobility">交通・バス</a><a href="#voice">市民の声</a><a href="#travel">観光</a><a href="#future">未来</a><a href="#news">お知らせ</a></nav>
+<nav class="jumprow" aria-label="ページ内ジャンプ"><a href="#services">生活8カテゴリ</a><a href="#search">AI案内</a><a href="#mobility">交通・バス</a><a href="#voice">市民の声</a><a href="#travel">観光</a><a href="#future">未来</a><a href="#concept">コンセプト</a><a href="#news">お知らせ</a></nav>
 <section class="section" id="services"><div class="titlebar"><h2>暮らしの8カテゴリ</h2><small>よく使う情報へ</small></div><div class="section-card"><div class="icon-grid">
 <a class="tile" href="#search" data-query="ごみ"><span>🗑️</span><strong>ごみ</strong></a>
 <a class="tile" href="#search" data-query="防災"><span>📢</span><strong>防災</strong></a>
@@ -113,6 +147,13 @@ button,input,a{font:inherit}button{cursor:pointer}a{color:inherit}a:focus-visibl
 <div class="tab-panel" id="mp2" role="tabpanel" aria-labelledby="mt2" hidden><span class="demo">公式計画を参照</span><h3>自動運転バスの実証・社会実装</h3><p>袖ケ浦バスターミナルと袖ケ浦駅北口を結ぶ計画。運行日程・利用可否は市の公式情報をご確認ください。</p><div class="btns"><a href="https://www.city.sodegaura.lg.jp/site/autonomousbus/" target="_blank" rel="noopener noreferrer">自動運転事業（公式） ↗</a></div></div>
 <p class="small-note">※青と白のバスや地図はコンセプトデザインです。実車・実停留所・運行時刻の再現ではありません。</p></div></section>
 <section class="section" id="voice"><div class="titlebar"><h2>⑤ 市民の声・改善提案</h2><small>つながるまち</small></div><div class="section-card"><h3>みんなの声で、もっとよい袖ケ浦市へ</h3><p>「投稿 → 整理 → 検討 → 回答」の流れをわかりやすく表示します。受付件数や回答状況の架空数値は表示しません。</p><div class="voice-steps"><span>✍️ 1. 投稿</span><span>🧠 2. 整理</span><span>🏛️ 3. 検討</span><span>✅ 4. 回答</span></div><div class="btns"><a href="https://www.city.sodegaura.lg.jp/site/mayor/densi-siminnokoe.html" target="_blank" rel="noopener noreferrer">市公式「市民の声」へ ↗</a><a class="secondary" href="./#voice">市民参加の仕組みを見る →</a></div><p class="small-note">このサイトは意見を送信・保存しません。実際の投稿は市の公式窓口で行います。</p></div></section>
+<section class="section" id="concept" aria-labelledby="conceptTitle"><div class="titlebar"><h2 id="conceptTitle">② 人 × AI × まちの未来</h2><small>デザインコンセプト</small></div>
+<div class="section-card concept-image"><div class="reference-photo">
+<img src="./assets/ax-future-concept-reference.png" loading="lazy" decoding="async" width="941" height="1672" alt="袖ケ浦の港の夕景と人物。『人×AI×まちの未来』をテーマに、わかりやすく・つながる・未来志向という3つの円を配置したデザインコンセプト。">
+<a href="#services" class="hotspot" aria-label="わかりやすく：8つの生活カテゴリを見る" style="left:3%;top:32%;width:29%;height:21%"></a>
+<a href="#voice" class="hotspot" aria-label="つながる：市民参加を見る" style="left:35%;top:32%;width:29%;height:21%"></a>
+<a href="#future" class="hotspot" aria-label="未来志向：未来シミュレーションを見る" style="left:67%;top:32%;width:30%;height:21%"></a>
+</div><div class="reference-description" style="margin-top:10px"><strong>3つの円はタップできます</strong><p>①わかりやすく → 生活カテゴリ　②つながる → 市民参加　③未来志向 → 未来シミュレーション</p><p>画像と操作ボタンは独立しています。リンク先の数値・交通情報は実際のデータに基づくものだけを表示します。</p></div></div></section>
 <section class="section" id="future"><div class="titlebar"><h2>⑥ 未来シミュレーション</h2><small>デモ・予測値ではありません</small></div><div class="section-card"><h3>未来の袖ケ浦を、テーマから考える</h3><div class="future-buttons" aria-label="年を選ぶ"><button data-year="2026" aria-pressed="true">2026</button><button data-year="2030" aria-pressed="false">2030</button><button data-year="2035" aria-pressed="false">2035</button><button data-year="2040" aria-pressed="false">2040</button></div><div class="future-body" id="futureText" aria-live="polite"><strong>2026年｜現在の課題を知る</strong><div>人口・交通・防災・高齢者支援の今を、公式データとともに確認します。</div></div><div class="btns" style="margin-top:12px"><a href="./#future">既存の未来分析へ →</a></div><p class="small-note">画像にあった「2030年67,000人」「2040年71,000人」は出典未確認のため採用しません。</p></div></section>
 <section class="section" id="travel"><div class="titlebar"><h2>⑦ 観光・地域情報</h2><small>アクアラインで広がる旅</small></div><div class="section-card"><h3>気軽なおでかけ候補</h3><p>アクアラインを使うおでかけ候補を表示します。所要時間「1時間以内」は道路混雑等で変わるため、断定しません。</p><div class="trip-cards">
 <article class="trip"><strong>🌊 海ほたるPA</strong><small>東京湾の景色と休憩スポット</small><a href="https://www.google.com/maps/dir/?api=1&amp;origin=%E8%A2%96%E3%82%B1%E6%B5%A6%E5%B8%82&amp;destination=%E6%B5%B7%E3%81%BB%E3%81%9F%E3%82%8BPA&amp;travelmode=driving" target="_blank" rel="noopener noreferrer">ルートを開く ↗</a></article>
