@@ -1,0 +1,19 @@
+name: QA visual citizen portal
+on:
+  push:
+    branches:
+      - "feature/**"
+  pull_request:
+    branches:
+      - main
+permissions:
+  contents: read
+jobs:
+  static-qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Python syntax
+        run: python -m py_compile tools/validate_site.py
+      - name: Node syntax and HTML QA
+        run: python tools/validate_site.py
