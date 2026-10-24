@@ -2,7 +2,7 @@ from pathlib import Path
 from html.parser import HTMLParser
 import json,re,sys,subprocess,shutil
 errors=[]
-required_files=['index.html','app.js','cityhall.html','cityhall.js','offline.html','manifest.webmanifest','sw.js','icon.svg','.nojekyll']
+required_files=['index.html','ax-visual.html','app.js','cityhall.html','cityhall.js','offline.html','manifest.webmanifest','sw.js','icon.svg','.nojekyll']
 for f in required_files:
     if not Path(f).exists(): errors.append(f'必須ファイル不足: {f}')
 class Audit(HTMLParser):
@@ -64,7 +64,7 @@ if Path('sw.js').exists():
     sw=Path('sw.js').read_text(encoding='utf-8')
     for t in ['./index.html','./app.js','./cityhall.html','./cityhall.js','./offline.html','./manifest.webmanifest','./icon.svg']:
         if t not in sw:errors.append(f'SW shell不足: {t}')
-    for t in ["url.origin!==self.location.origin","req.mode==='navigate'","caches.match('./offline.html')","sodegau-ride-v051",'CACHEABLE_PATHS','normalizedNavigationRequest',"u.search=''",'SKIP_WAITING','event.waitUntil']:
+    for t in ["url.origin!==self.location.origin","req.mode==='navigate'","caches.match('./offline.html')","sodegau-ride-v052",'CACHEABLE_PATHS','normalizedNavigationRequest',"u.search=''",'SKIP_WAITING','event.waitUntil']:
         if t not in sw:errors.append(f'SW安全要件不足: {t}')
     if "caches.match('./index.html')" in sw:errors.append('旧index誤フォールバックが残っています')
     if 'c.put(req' in sw:errors.append('クエリ付きrequestを直接キャッシュする旧処理が残っています')
@@ -80,6 +80,27 @@ if node:
             if p.returncode:errors.append(f'{js} JavaScript構文エラー: {p.stderr.strip()}')
 else:
     errors.append('node が見つからずJavaScript構文検査を実行できません')
+if Path('ax-visual.html').exists():
+    v=audit_html('ax-visual.html')
+    if '非公式・個人制作' not in v: errors.append('visual: 非公式表示なし')
+    if v.count('class="tile"')!=8: errors.append('visual: 暮らし8タイル不足')
+    if v.count('data-mob=')!=3: errors.append('visual: 交通3タブ不足')
+    if v.count('class="speech"')!=1 or v.count('.speech:after')!=1: errors.append('visual: 単一吹き出し構造違反')
+    if 'data-year="2040"' not in v: errors.append('visual: 未来年不足')
+    for src in ['city.sodegaura.lg.jp/soshiki/tokei/basurosenitiran.html','city.sodegaura.lg.jp/site/mayor/densi-siminnokoe.html']:
+        if src not in v: errors.append('visual: 一次情報リンク不足: '+src)
+    snippets=re.findall(r'<script(?: [^>]*)?>(.*?)</script>',v,re.S)
+    if len(snippets)!=1: errors.append('visual: inline script本数が1ではない')
+    elif node:
+        p=subprocess.run([node,'--check','-'],input=snippets[0],capture_output=True,text=True)
+        if p.returncode: errors.append('visual JavaScript構文エラー: '+p.stderr.strip())
+    for y in ['2026','2030','2035','2040']:
+        if 'data-year="'+y+'"' not in v: errors.append('visual: 年度'+y+'不足')
+if Path('index.html').exists():
+    s=Path('index.html').read_text(encoding='utf-8')
+    if 'href="./ax-visual.html"' not in s: errors.append('index: visual導線なし')
+if Path('sw.js').exists() and './ax-visual.html' not in Path('sw.js').read_text(encoding='utf-8'):
+    errors.append('PWA: visual shell不足')
 if errors:
     print('VALIDATION FAILED')
     for e in errors:print('-',e)
