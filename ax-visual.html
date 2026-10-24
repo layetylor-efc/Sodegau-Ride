@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#074caa">
+<meta name="description" content="Sodegau-Rideのビジュアル版。ごみ・防災・子育て・手続き・健康・交通・高齢者・お知らせから3タップで情報へ。非公式プロトタイプ。">
+<title>Sodegau-Ride｜市民ポータル ビジュアル版</title>
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<style>
+:root{--blue:#0756c7;--blue2:#0089ee;--navy:#061d52;--ink:#09275b;--card:#ffffffed;--line:#bdd9f5;--size:1;--shadow:0 15px 35px #0928602c}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:132px}
+body{margin:0;background:linear-gradient(180deg,#0063d6 0,#4caffb 39%,#e6f5ff 65%,#f4faff 100%);color:var(--ink);font-family:system-ui,"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;font-size:calc(16px * var(--size));line-height:1.55}
+button,input,a{font:inherit}button{cursor:pointer}a{color:inherit}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #fdcb4f;outline-offset:3px}
+[hidden]{display:none!important}.sr-only{position:absolute;clip:rect(0 0 0 0);width:1px;height:1px;overflow:hidden}
+.notice{position:sticky;top:0;z-index:100;background:#09223c;color:white;border-bottom:3px solid #ffd45b;text-align:center;padding:9px 12px;font-size:.75em;font-weight:750}
+.notice b{color:#ffe88a}
+.shell{max-width:1000px;margin:auto;padding:0 12px 105px}
+.mainheader{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 2px;color:#fff}
+.brand{display:flex;align-items:center;gap:9px;font-weight:950;font-size:clamp(1.25em,4.4vw,1.85em);letter-spacing:-.035em;min-width:0}
+.brand img{width:45px;height:45px;flex-shrink:0;border:3px solid #fff;border-radius:12px;background:#fff}
+.headtools{display:flex;align-items:center;gap:6px}
+.headtools a{white-space:nowrap;text-decoration:none;padding:7px 10px;border-radius:12px;border:1px solid #ffffff70;background:#ffffff16;font-size:.79em;font-weight:800}
+.hero{position:relative;min-height:360px;border-radius:26px;overflow:hidden;background:radial-gradient(circle at 76% 36%,#ffd57b 0 7%,transparent 27%),linear-gradient(160deg,#0b75e7,#83c5ff 39%,#ffc3a1 63%,#ffad56 78%,#277cb7 100%);box-shadow:var(--shadow);color:#fff}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#032f7e76,transparent 80%);pointer-events:none}
+.sky{position:absolute;bottom:0;left:0;width:100%;height:62%;opacity:.88;pointer-events:none}
+.hero-copy{position:relative;z-index:2;max-width:560px;padding:25px 25px 148px;text-shadow:0 2px 12px #043f83a8}
+.hero-kicker{font-size:.77em;font-weight:900;letter-spacing:.1em}
+.hero h1{font-size:clamp(1.85em,6.5vw,3.4em);letter-spacing:-.035em;line-height:1.18;margin:13px 0}
+.hero p{margin:0;font-weight:750;max-width:28em}
+.guide{position:absolute;bottom:10px;right:20px;z-index:2;width:clamp(126px,33%,260px);filter:drop-shadow(0 6px 14px #18295b70)}
+.guide svg{width:100%;height:auto;display:block}
+.speech{position:absolute;bottom:14px;left:22px;z-index:3;max-width:min(58%,330px);padding:13px 19px;background:#fffc;color:#0b3178;border:3px solid #fff;border-radius:25px;font-size:.9em;font-weight:900;box-shadow:0 7px 18px #07357533}
+.speech:after{content:"";position:absolute;right:-13px;bottom:13px;width:24px;height:24px;transform:rotate(-35deg);background:#fff;border-right:3px solid #fff;border-bottom:3px solid #fff;clip-path:polygon(0 0,100% 50%,0 100%)}
+.preview{background:#fffa;border:1px solid #ffffffbc;border-radius:20px;box-shadow:var(--shadow);backdrop-filter:blur(9px)}
+.jumprow{display:flex;gap:7px;overflow-x:auto;padding:12px 0 14px;scrollbar-width:thin}
+.jumprow a{flex:0 0 auto;min-height:43px;display:inline-flex;align-items:center;text-decoration:none;padding:9px 15px;border-radius:999px;background:#ffffffea;color:#12417f;font-size:.86em;font-weight:900;box-shadow:0 4px 12px #12254b27}
+.section{margin-top:20px;scroll-margin-top:92px}
+.titlebar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 2px 12px}
+.titlebar h2{margin:0;font-size:clamp(1.32em,4vw,1.75em);color:#08387f}
+.titlebar small{font-size:.69em;color:#225d91}
+.section-card{border-radius:24px;background:#fffefa;border:1px solid #fff;box-shadow:var(--shadow);padding:clamp(15px,3.7vw,26px)}
+.icon-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.tile{padding:12px 5px;min-width:0;min-height:112px;text-decoration:none;border-radius:19px;border:2px solid #fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 15px #0e50ac18;color:#081e5d;text-align:center;background:linear-gradient(140deg,#fff,#eef7ff)}
+.tile:nth-child(4n+1){background:linear-gradient(140deg,#edfff8,#f7fdff)}
+.tile:nth-child(4n+2){background:linear-gradient(140deg,#fff5ef,#fff)}
+.tile:nth-child(4n+3){background:linear-gradient(140deg,#fff0fb,#fff)}
+.tile:nth-child(4n){background:linear-gradient(140deg,#f2f1ff,#fff)}
+.tile span{font-size:clamp(1.55em,5vw,2.2em);line-height:1.2}
+.tile strong{font-size:.82em;line-height:1.3;overflow-wrap:anywhere}
+.one-tap{display:flex;overflow-x:auto;gap:9px;margin-top:15px;padding:1px 0 8px}
+.one-tap a{background:#fff;color:#124d93;text-decoration:none;font-weight:800;font-size:.79em;padding:9px 12px;border:1px solid #b4d8fa;border-radius:999px;white-space:nowrap;flex:none}
+.ai-box{border-radius:24px;padding:21px 17px;color:#fff;background:linear-gradient(135deg,#082d75,#005ecb 63%,#0b8cda);box-shadow:var(--shadow)}
+.ai-box h2{margin:0 0 6px;font-size:1.38em}.ai-box p{margin:0 0 13px;font-size:.85em;color:#e2f3ff}
+.ai-search{display:flex;gap:8px}.ai-search input{min-width:0;flex:1;padding:12px;border:0;border-radius:14px;background:#fff;color:#082857}
+.ai-search button{border:1px solid #fff;background:#00a6ef;color:#fff;border-radius:13px;padding:10px 17px;font-weight:900}
+.ai-result{background:#f4faff;color:#0b3677;margin-top:12px;padding:12px;border-radius:14px}
+.ai-result a{display:inline-block;font-weight:900;margin:8px 9px 3px 0;color:#0453b9}
+.tabs{display:flex;gap:8px;overflow:auto;padding:2px 0 10px}.tab{min-height:44px;flex:1 0 auto;border:1px solid #b4d6f5;background:#edf5ff;color:#0e4083;border-radius:13px;padding:9px 12px;font-weight:900;font-size:.83em}.tab[aria-selected=true]{background:linear-gradient(120deg,#0077eb,#0253ba);color:#fff;border-color:#197de3}
+.tab-panel{padding:15px;border:1px solid #d9eafd;border-radius:18px;background:#f5faff}
+.tab-panel p{margin:6px 0 12px}.fake-map{height:180px;border-radius:14px;position:relative;overflow:hidden;background:repeating-linear-gradient(65deg,transparent 0 23px,#ddedeb 24px 28px,transparent 29px 51px),linear-gradient(120deg,#e5f9ea 0 48%,#89cde8 49% 60%,#ecf6ee 61%);border:1px solid #c5e2ee}
+.fake-map:before{content:"";position:absolute;width:4px;height:190px;background:#0373dc;left:46%;top:-5px;transform:rotate(-30deg);box-shadow:0 0 0 5px #ffffff99}
+.fake-map span{position:absolute;top:25%;left:23%;border-radius:999px;padding:7px 10px;background:#0756bc;color:#fff;font-weight:900;font-size:.76em}
+.demo{display:inline-block;background:#fff4d7;color:#815500;border:1px solid #f0c56d;border-radius:999px;padding:5px 10px;font-size:.71em;font-weight:900}
+.btns{display:flex;flex-wrap:wrap;gap:8px}.btns a{display:inline-flex;align-items:center;min-height:44px;text-decoration:none;background:#075bcc;color:#fff;padding:10px 14px;border-radius:12px;font-weight:900;font-size:.84em}.btns a.secondary{background:#fff;color:#0756bc;border:1px solid #97bfe9}
+.blurb{font-size:.78em;color:#4b657e}
+.voice-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:13px 0}.voice-steps span{text-align:center;background:#ebf8ff;border-radius:10px;padding:9px 3px;font-size:.75em;font-weight:900}
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.summary-grid article{background:#f2f9ff;border:1px solid #c7e3f8;border-radius:15px;padding:14px}.summary-grid b{display:block;color:#0754b2}.summary-grid small{color:#4b657e}
+.trip-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.trip{min-width:0;padding:14px;background:linear-gradient(150deg,#dff5ff,#fff);border:1px solid #c4e4f8;border-radius:16px}.trip strong{display:block}.trip small{display:block;color:#466482;margin:6px 0}.trip a{color:#0754b2;font-weight:900;font-size:.83em}
+.future-buttons{display:flex;gap:6px;margin:10px 0}.future-buttons button{flex:1;border:1px solid #bdd7ed;border-radius:11px;background:#f4faff;color:#123c7b;padding:12px 4px;font-weight:900}.future-buttons button[aria-pressed=true]{background:#0756c7;color:#fff}
+.future-body{padding:15px;background:#eef7ff;border-radius:14px}
+.small-note{font-size:.75em;color:#48627d;margin:13px 0 0}
+.global-actions{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:18px 0;color:#184a83;font-weight:850}
+.size-btn{border:1px solid #9bc9f0;color:#104c94;background:#fff;border-radius:12px;padding:8px 11px;min-height:44px}
+.footer{text-align:center;font-size:.75em;color:#456888;margin:30px 0 12px}
+.bottom{position:fixed;left:50%;bottom:max(6px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(620px,calc(100% - 20px));z-index:99;background:#062c65f5;color:#fff;border:1px solid #58a9ff59;border-radius:19px;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:7px;box-shadow:0 12px 30px #0537755f}
+.bottom a{text-align:center;text-decoration:none;color:#fff;font-size:.68em;padding:6px 1px;border-radius:9px}.bottom a span{display:block;font-size:1.55em}
+@media(max-width:640px){.hero{min-height:360px}.hero-copy{padding:22px 16px 150px}.speech{left:15px;bottom:10px}.guide{right:6px}.icon-grid{gap:7px}.tile{min-height:100px;padding:10px 3px}.summary-grid{grid-template-columns:1fr 1fr}.trip-cards{grid-template-columns:1fr}.voice-steps{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:375px){.icon-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.tile strong{font-size:.71em}.tile span{font-size:1.6em}.brand{font-size:1.16em}.headtools a{font-size:.7em;padding:6px}.hero-copy{padding-bottom:155px}.ai-search{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="notice"><b>⚠ 非公式・個人制作／デザイン検証版</b>　袖ケ浦市・交通事業者による公式サービスではありません。時刻・運賃は必ず公式情報で確認してください。</div>
+<div class="shell" id="top">
+<header class="mainheader"><div class="brand"><img src="./icon.svg" alt="">Sodegau-Ride <span class="sr-only">ビジュアル版</span></div><div class="headtools"><a href="./">既存の都市OS ↗</a><a href="#search">検索</a></div></header>
+<section class="hero" aria-labelledby="heroTitle">
+<svg class="sky" viewBox="0 0 980 360" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#4391c4"/><stop offset="1" stop-color="#07376b"/></linearGradient></defs><rect y="275" width="980" height="85" fill="url(#ocean)"/><path d="M0 250L54 250V194h20v56h28v-38h39v38h32v-95h17v95h45v-70h42v70h40v-24h35v24h22v-135h21v135h44v-51h62v51h27v-93h32v93h38v-30h39v30h21v-118h16v118h55v-59h46v59h43v-81h19v81h64v-43h55v43h43v-95h15v95h40v-31h47v31h48v110H0z" fill="#174377" opacity=".7"/><g fill="#fef2a4" opacity=".75"><rect x="192" y="200" width="3" height="7"/><rect x="264" y="200" width="3" height="7"/><rect x="398" y="212" width="3" height="7"/><rect x="504" y="200" width="3" height="7"/><rect x="711" y="220" width="3" height="7"/><rect x="839" y="235" width="3" height="7"/></g><path d="M0 301Q320 275 550 305T980 299" stroke="#ffca7f" fill="none" stroke-width="4" opacity=".6"/><path d="M0 320Q280 299 600 326T980 313" stroke="#a5d5ff" fill="none" stroke-width="3" opacity=".45"/></svg>
+<div class="hero-copy"><div class="hero-kicker">AI × 市民 × まちの未来</div><h1 id="heroTitle">AIでつながる、<br>もっと暮らしやすい<br>袖ケ浦へ。</h1><p>ごみ・防災・交通・手続き。<br>知りたいことへ、迷わず3タップ。</p></div>
+<div class="guide" aria-hidden="true"><svg viewBox="0 0 245 300" role="presentation"><defs><linearGradient id="hair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#252c58"/><stop offset=".65" stop-color="#47415d"/><stop offset="1" stop-color="#716578"/></linearGradient><linearGradient id="coat" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eff6ff"/><stop offset="1" stop-color="#778bbf"/></linearGradient></defs><path d="M37 214Q-4 245 0 300H244Q248 236 185 211L144 193z" fill="url(#coat)" stroke="#192c65" stroke-width="4"/><path d="M80 190L115 242 144 192 154 274H75z" fill="#15224b"/><ellipse cx="116" cy="132" rx="101" ry="113" fill="url(#hair)" stroke="#252445" stroke-width="5"/><ellipse cx="124" cy="148" rx="76" ry="83" fill="#fbe2ce"/><path d="M42 105Q56 4 145 18T202 118Q174 97 161 64Q120 103 67 91z" fill="url(#hair)"/><ellipse cx="93" cy="147" rx="14" ry="20" fill="#6dc6ff" stroke="#14336b" stroke-width="5"/><ellipse cx="157" cy="147" rx="14" ry="20" fill="#6dc6ff" stroke="#14336b" stroke-width="5"/><circle cx="89" cy="144" r="5" fill="white"/><circle cx="153" cy="144" r="5" fill="white"/><g fill="none" stroke="#23345d" stroke-width="5"><circle cx="93" cy="145" r="29"/><circle cx="157" cy="145" r="29"/><path d="M122 141h6M64 139L40 129M187 141l23-10"/></g><path d="M111 185Q132 208 154 181" fill="#b63b55" stroke="#942943" stroke-width="3"/><path d="M108 201v17M151 200v18" stroke="#e7b8a5" stroke-width="6"/><path d="M57 107Q79 118 104 93M114 81Q167 130 196 91" stroke="#373b60" stroke-width="24" fill="none" stroke-linecap="round"/><path d="M24 253Q57 213 80 239" fill="none" stroke="#d9f4ff" stroke-width="16"/><circle cx="174" cy="270" r="9" fill="#09b8ec"/></svg></div>
+<div class="speech">こんにちは！<br>まちの案内はおまかせ♪</div>
+</section>
+<nav class="jumprow" aria-label="ページ内ジャンプ"><a href="#services">生活8カテゴリ</a><a href="#search">AI案内</a><a href="#mobility">交通・バス</a><a href="#voice">市民の声</a><a href="#travel">観光</a><a href="#future">未来</a><a href="#news">お知らせ</a></nav>
+<section class="section" id="services"><div class="titlebar"><h2>暮らしの8カテゴリ</h2><small>よく使う情報へ</small></div><div class="section-card"><div class="icon-grid">
+<a class="tile" href="#search" data-query="ごみ"><span>🗑️</span><strong>ごみ</strong></a>
+<a class="tile" href="#search" data-query="防災"><span>📢</span><strong>防災</strong></a>
+<a class="tile" href="#search" data-query="子育て"><span>👨‍👩‍👧</span><strong>子育て</strong></a>
+<a class="tile" href="#search" data-query="住民票"><span>📄</span><strong>手続き</strong></a>
+<a class="tile" href="#search" data-query="医療"><span>💗</span><strong>病院・健康</strong></a>
+<a class="tile" href="#mobility"><span>🚌</span><strong>交通</strong></a>
+<a class="tile" href="#search" data-query="高齢者"><span>🧓</span><strong>高齢者支援</strong></a>
+<a class="tile" href="#news"><span>🔔</span><strong>お知らせ</strong></a>
+</div><div class="one-tap"><a href="https://www.city.sodegaura.lg.jp/life/12/" target="_blank" rel="noopener noreferrer">ごみ分別 ↗</a><a href="https://www.city.sodegaura.lg.jp/life/11/" target="_blank" rel="noopener noreferrer">防災情報 ↗</a><a href="https://www.city.sodegaura.lg.jp/soshiki/tokei/basurosenitiran.html" target="_blank" rel="noopener noreferrer">バス時刻表 ↗</a><a href="./cityhall.html">市役所案内 ↗</a></div></div></section>
+<section class="section" id="search"><div class="ai-box"><h2>🤖 市政コンシェルジュ</h2><p>知りたいことを入力してください。公式ページを探す簡易案内です（AIとの自由会話ではありません）。</p><form class="ai-search" id="quickForm"><label class="sr-only" for="quickInput">調べたいこと</label><input id="quickInput" name="q" placeholder="例：長浦駅からのバスを調べたい" autocomplete="off"><button type="submit">案内する →</button></form><div id="quickAnswer" class="ai-result" aria-live="polite" hidden></div><div class="one-tap"><a href="./#ai">既存AIルーターを開く →</a><a href="./cityhall.html">市役所内の窓口を探す →</a></div></div></section>
+<section class="section" id="mobility"><div class="titlebar"><h2>④ 交通・バス情報</h2><small>路線・経路・自動運転</small></div><div class="section-card"><div class="tabs" role="tablist" aria-label="交通情報の表示切替">
+<button class="tab" role="tab" id="mt0" aria-selected="true" aria-controls="mp0" data-mob="0">🚌 バス時刻表</button>
+<button class="tab" role="tab" id="mt1" aria-selected="false" aria-controls="mp1" data-mob="1" tabindex="-1">📍 ルート検索</button>
+<button class="tab" role="tab" id="mt2" aria-selected="false" aria-controls="mp2" data-mob="2" tabindex="-1">✨ 自動運転バス</button>
+</div>
+<div class="tab-panel" id="mp0" role="tabpanel" aria-labelledby="mt0"><span class="demo">公式ページ連携・分数は表示しません</span><h3>長浦駅を通る路線も公式資料から</h3><p>のぞみ野長浦線などの路線図・時刻表・運賃表を確認できます。便によって経由地・曜日・時刻が異なります。</p><div class="btns"><a href="https://www.city.sodegaura.lg.jp/soshiki/tokei/basurosenitiran.html" target="_blank" rel="noopener noreferrer">市内バス路線一覧 ↗</a><a class="secondary" href="https://www.city.sodegaura.lg.jp/soshiki/tokei/sinaikousokubasurosenbasujikoku.html" target="_blank" rel="noopener noreferrer">高速バス案内 ↗</a></div></div>
+<div class="tab-panel" id="mp1" role="tabpanel" aria-labelledby="mt1" hidden><span class="demo">図は概念イメージ・運行経路ではありません</span><div class="fake-map" role="img" aria-label="東京湾と道路をイメージした概念図。実際の経路ではありません"><span>📍 長浦駅周辺</span></div><p>正確な乗換・距離・発車時刻・運賃は、乗車日を指定して地図・運行会社の案内で確認してください。</p><div class="btns"><a href="https://www.google.com/maps/dir/?api=1&amp;origin=%E9%95%B7%E6%B5%A6%E9%A7%85&amp;destination=%E8%A2%96%E3%82%B1%E6%B5%A6%E5%B8%82%E5%BD%B9%E6%89%80&amp;travelmode=transit" target="_blank" rel="noopener noreferrer">Googleマップで公共交通検索 ↗</a></div></div>
+<div class="tab-panel" id="mp2" role="tabpanel" aria-labelledby="mt2" hidden><span class="demo">公式計画を参照</span><h3>自動運転バスの実証・社会実装</h3><p>袖ケ浦バスターミナルと袖ケ浦駅北口を結ぶ計画。運行日程・利用可否は市の公式情報をご確認ください。</p><div class="btns"><a href="https://www.city.sodegaura.lg.jp/site/autonomousbus/" target="_blank" rel="noopener noreferrer">自動運転事業（公式） ↗</a></div></div>
+<p class="small-note">※青と白のバスや地図はコンセプトデザインです。実車・実停留所・運行時刻の再現ではありません。</p></div></section>
+<section class="section" id="voice"><div class="titlebar"><h2>⑤ 市民の声・改善提案</h2><small>つながるまち</small></div><div class="section-card"><h3>みんなの声で、もっとよい袖ケ浦市へ</h3><p>「投稿 → 整理 → 検討 → 回答」の流れをわかりやすく表示します。受付件数や回答状況の架空数値は表示しません。</p><div class="voice-steps"><span>✍️ 1. 投稿</span><span>🧠 2. 整理</span><span>🏛️ 3. 検討</span><span>✅ 4. 回答</span></div><div class="btns"><a href="https://www.city.sodegaura.lg.jp/site/mayor/densi-siminnokoe.html" target="_blank" rel="noopener noreferrer">市公式「市民の声」へ ↗</a><a class="secondary" href="./#voice">市民参加の仕組みを見る →</a></div><p class="small-note">このサイトは意見を送信・保存しません。実際の投稿は市の公式窓口で行います。</p></div></section>
+<section class="section" id="future"><div class="titlebar"><h2>⑥ 未来シミュレーション</h2><small>デモ・予測値ではありません</small></div><div class="section-card"><h3>未来の袖ケ浦を、テーマから考える</h3><div class="future-buttons" aria-label="年を選ぶ"><button data-year="2026" aria-pressed="true">2026</button><button data-year="2030" aria-pressed="false">2030</button><button data-year="2035" aria-pressed="false">2035</button><button data-year="2040" aria-pressed="false">2040</button></div><div class="future-body" id="futureText" aria-live="polite"><strong>2026年｜現在の課題を知る</strong><div>人口・交通・防災・高齢者支援の今を、公式データとともに確認します。</div></div><div class="btns" style="margin-top:12px"><a href="./#future">既存の未来分析へ →</a></div><p class="small-note">画像にあった「2030年67,000人」「2040年71,000人」は出典未確認のため採用しません。</p></div></section>
+<section class="section" id="travel"><div class="titlebar"><h2>⑦ 観光・地域情報</h2><small>アクアラインで広がる旅</small></div><div class="section-card"><h3>気軽なおでかけ候補</h3><p>アクアラインを使うおでかけ候補を表示します。所要時間「1時間以内」は道路混雑等で変わるため、断定しません。</p><div class="trip-cards">
+<article class="trip"><strong>🌊 海ほたるPA</strong><small>東京湾の景色と休憩スポット</small><a href="https://www.google.com/maps/dir/?api=1&amp;origin=%E8%A2%96%E3%82%B1%E6%B5%A6%E5%B8%82&amp;destination=%E6%B5%B7%E3%81%BB%E3%81%9F%E3%82%8BPA&amp;travelmode=driving" target="_blank" rel="noopener noreferrer">ルートを開く ↗</a></article>
+<article class="trip"><strong>🏙️ 川崎エリア</strong><small>アクアライン経由の市街地散策候補</small><a href="https://www.google.com/maps/dir/?api=1&amp;origin=%E8%A2%96%E3%82%B1%E6%B5%A6%E5%B8%82&amp;destination=%E5%B7%9D%E5%B4%8E%E9%A7%85&amp;travelmode=driving" target="_blank" rel="noopener noreferrer">ルートを開く ↗</a></article>
+<article class="trip"><strong>🌉 横浜ベイエリア</strong><small>海沿いの景観と街歩きの候補</small><a href="https://www.google.com/maps/dir/?api=1&amp;origin=%E8%A2%96%E3%82%B1%E6%B5%A6%E5%B8%82&amp;destination=%E6%A8%AA%E6%B5%9C%E8%B5%A4%E3%83%AC%E3%83%B3%E3%82%AC%E5%80%89%E5%BA%AB&amp;travelmode=driving" target="_blank" rel="noopener noreferrer">ルートを開く ↗</a></article>
+</div><p class="small-note">※距離・高速料金・所要時間は最新の地図サービスでご確認ください。出発地・交通状況次第で変化します。</p></div></section>
+<section class="section" id="news"><div class="titlebar"><h2>⑧ お知らせ・イベント</h2><small>公式の最新情報に接続</small></div><div class="section-card"><div class="summary-grid"><article><b>🔔 市のお知らせ</b><small>行政情報の最新掲載先</small></article><article><b>🎉 イベント</b><small>地域行事の最新掲載先</small></article><article><b>🛟 防災情報</b><small>緊急時は公式発表優先</small></article></div><p class="small-note">架空のお知らせ日付・件数は掲載しません。情報が変化するため、必ず市の公式ページで最新情報をご確認ください。</p><div class="btns" style="margin-top:13px"><a href="https://www.city.sodegaura.lg.jp/" target="_blank" rel="noopener noreferrer">袖ケ浦市公式ホームページ ↗</a><a class="secondary" href="https://www.city.sodegaura.lg.jp/life/11/" target="_blank" rel="noopener noreferrer">防災・安全情報 ↗</a></div></div></section>
+<div class="global-actions"><span>文字の大きさ</span><button id="fontBtn" class="size-btn" type="button" aria-label="文字の大きさを変える">中 ▼</button></div>
+<footer class="footer">Sodegau-Ride ビジュアル版 2026-10-24 / 非公式・個人制作。背景・人物・地図はコンセプトイラスト。<br><a href="./">既存の都市OSに戻る</a></footer>
+</div>
+<nav class="bottom" aria-label="スマホ固定ナビ"><a href="#top"><span>⌂</span>トップ</a><a href="#services"><span>🗂️</span>分類</a><a href="#search"><span>🤖</span>AI案内</a><a href="#mobility"><span>🚌</span>交通</a><a href="#voice"><span>💬</span>市民の声</a></nav>
+<script>
+(function(){
+'use strict';
+var LINK={
+'gomi':['ごみ・くらしの公式情報','https://www.city.sodegaura.lg.jp/life/12/'],
+'bosai':['防災・安全（公式）','https://www.city.sodegaura.lg.jp/life/11/'],
+'child':['子育て・教育（公式）','https://www.city.sodegaura.lg.jp/life/13/'],
+'health':['健康・福祉（公式）','https://www.city.sodegaura.lg.jp/life/14/'],
+'bus':['市内バス路線・時刻表（公式）','https://www.city.sodegaura.lg.jp/soshiki/tokei/basurosenitiran.html'],
+'voice':['市民の声制度（公式）','https://www.city.sodegaura.lg.jp/site/mayor/densi-siminnokoe.html'],
+'cityhall':['庁舎の目的別案内','./cityhall.html'],
+'news':['袖ケ浦市ホームページ','https://www.city.sodegaura.lg.jp/']
+};
+function route(q){var s=String(q||'').trim().toLowerCase().normalize('NFKC');if(!s)return null;
+if(/ごみ|ゴミ|分別|粗大/.test(s))return LINK.gomi;
+if(/防災|避難|浸水|災害|台風/.test(s))return LINK.bosai;
+if(/子育|こども|子供|保育|妊娠|出産/.test(s))return LINK.child;
+if(/健康|病院|医療|休日当番|介護|高齢者|福祉/.test(s))return LINK.health;
+if(/バス|長浦|交通|時刻表|自動運転|電車/.test(s))return LINK.bus;
+if(/市民の声|改善|苦情|提案/.test(s))return LINK.voice;
+if(/住民票|転入|転出|戸籍|手続|窓口|市役所/.test(s))return LINK.cityhall;
+return LINK.news;}
+function present(q){var box=document.getElementById('quickAnswer'),a=route(q);if(!a){box.hidden=false;box.textContent='知りたいことを入力してください。';return;}
+box.hidden=false;box.replaceChildren();var b=document.createElement('strong');b.textContent='おすすめの確認先';var p=document.createElement('p');p.textContent='「'+q+'」に関連する一次情報を案内します。正式な判断は公式ページを確認してください。';var link=document.createElement('a');link.href=a[1];link.textContent=a[0]+' ↗';if(a[1].startsWith('https://')){link.target='_blank';link.rel='noopener noreferrer';}
+box.append(b,p,link);}
+document.getElementById('quickForm').addEventListener('submit',function(e){e.preventDefault();present(document.getElementById('quickInput').value);});
+document.querySelectorAll('[data-query]').forEach(function(el){el.addEventListener('click',function(){var q=el.dataset.query;document.getElementById('quickInput').value=q;present(q);});});
+var mobBtns=[].slice.call(document.querySelectorAll('[data-mob]'));function setMob(n){mobBtns.forEach(function(b,i){var on=i===n;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;document.getElementById('mp'+i).hidden=!on;});}
+mobBtns.forEach(function(b,i){b.addEventListener('click',function(){setMob(i);});b.addEventListener('keydown',function(e){var k=e.key;if(k==='ArrowRight'||k==='ArrowLeft'||k==='Home'||k==='End'){e.preventDefault();var n=k==='Home'?0:k==='End'?2:(i+(k==='ArrowRight'?1:2))%3;setMob(n);mobBtns[n].focus();}});});
+var years={2026:['現在の課題を知る','人口・交通・防災・高齢者支援の今を、公式データとともに確認します。'],2030:['近い将来を考える','公共交通の維持、行政手続きのデジタル化、地域での支え合いを検討します。'],2035:['暮らしの変化を考える','高齢者支援・交通の選択肢・防災への備えがどう変わるか、仮説を比較します。'],2040:['長期のまちづくりを考える','人口の変化や施設配置に対応する政策の選択肢を比較します。確定予測ではありません。']};
+document.querySelectorAll('[data-year]').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('[data-year]').forEach(function(t){t.setAttribute('aria-pressed',String(t===b));});var y=b.dataset.year,arr=years[y],out=document.getElementById('futureText');out.replaceChildren();var s=document.createElement('strong');s.textContent=y+'年｜'+arr[0];var d=document.createElement('div');d.textContent=arr[1];out.append(s,d);});});
+var sizes=[['小',.88],['中',1],['大',1.13],['特大',1.28]],sizeIndex=1;
+try{var saved=localStorage.getItem('sodegau-visual-size');var n=Number(saved);if(Number.isInteger(n)&&n>=0&&n<4)sizeIndex=n;}catch(_){}
+function applySize(){document.documentElement.style.setProperty('--size',sizes[sizeIndex][1]);document.getElementById('fontBtn').textContent=sizes[sizeIndex][0]+' ▼';}
+document.getElementById('fontBtn').addEventListener('click',function(){sizeIndex=(sizeIndex+1)%4;applySize();try{localStorage.setItem('sodegau-visual-size',String(sizeIndex));}catch(_){}});
+applySize();
+})();
+</script>
+</body></html>
