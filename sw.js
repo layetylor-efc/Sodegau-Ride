@@ -1,5 +1,5 @@
-const CACHE='sodegau-ride-v053';
-const SHELL=['./','./index.html','./ax-visual.html','./assets/ax-smartphone-reference.png','./assets/ax-future-concept-reference.png','./app.js','./cityhall.html','./cityhall.js','./offline.html','./manifest.webmanifest','./icon.svg'];
+const CACHE='sodegau-ride-v054';
+const SHELL=['./','./index.html','./ax-visual.html','./assets/ax-smartphone-reference.webp','./assets/ax-future-concept-reference.webp','./app.js','./cityhall.html','./cityhall.js','./offline.html','./manifest.webmanifest','./icon.svg'];
 const CACHEABLE_PATHS=new Set(SHELL.map(x=>new URL(x,self.registration.scope).pathname));
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)))});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim()});
