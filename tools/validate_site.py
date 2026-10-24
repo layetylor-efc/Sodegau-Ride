@@ -2,7 +2,7 @@ from pathlib import Path
 from html.parser import HTMLParser
 import json,re,sys,subprocess,shutil
 errors=[]
-required_files=['assets/ax-smartphone-reference.png','assets/ax-future-concept-reference.png','index.html','ax-visual.html','app.js','cityhall.html','cityhall.js','offline.html','manifest.webmanifest','sw.js','icon.svg','.nojekyll']
+required_files=['assets/ax-smartphone-reference.webp','assets/ax-future-concept-reference.webp','index.html','ax-visual.html','app.js','cityhall.html','cityhall.js','offline.html','manifest.webmanifest','sw.js','icon.svg','.nojekyll']
 for f in required_files:
     if not Path(f).exists(): errors.append(f'必須ファイル不足: {f}')
 class Audit(HTMLParser):
@@ -64,7 +64,7 @@ if Path('sw.js').exists():
     sw=Path('sw.js').read_text(encoding='utf-8')
     for t in ['./index.html','./app.js','./cityhall.html','./cityhall.js','./offline.html','./manifest.webmanifest','./icon.svg']:
         if t not in sw:errors.append(f'SW shell不足: {t}')
-    for t in ["url.origin!==self.location.origin","req.mode==='navigate'","caches.match('./offline.html')","sodegau-ride-v053",'CACHEABLE_PATHS','normalizedNavigationRequest',"u.search=''",'SKIP_WAITING','event.waitUntil']:
+    for t in ["url.origin!==self.location.origin","req.mode==='navigate'","caches.match('./offline.html')","sodegau-ride-v054",'CACHEABLE_PATHS','normalizedNavigationRequest',"u.search=''",'SKIP_WAITING','event.waitUntil']:
         if t not in sw:errors.append(f'SW安全要件不足: {t}')
     if "caches.match('./index.html')" in sw:errors.append('旧index誤フォールバックが残っています')
     if 'c.put(req' in sw:errors.append('クエリ付きrequestを直接キャッシュする旧処理が残っています')
@@ -91,11 +91,11 @@ if Path('ax-visual.html').exists():
     if 'href="#concept"' not in v: errors.append('visual: 2枚目へのジャンプ不足')
     if not re.search(r'<img[^>]+alt="[^"]+"[^>]+width="941" height="1672"',v): errors.append('visual: 画像のalt/縦横情報不足')
     if v.count('id="heroTitle"')!=1 or v.count('id="conceptTitle"')!=1: errors.append('visual: 見出し欠落・重複')
-    for path in ['assets/ax-smartphone-reference.png','assets/ax-future-concept-reference.png']:
+    for path in ['assets/ax-smartphone-reference.webp','assets/ax-future-concept-reference.webp']:
         p=Path(path)
         if p.exists():
             data=p.read_bytes()
-            if not data.startswith(b'\x89PNG\r\n\x1a\n'): errors.append('visual: PNGシグネチャ不正 '+path)
+            if not (data[:4]==b'RIFF' and data[8:12]==b'WEBP'): errors.append('visual: WebPシグネチャ不正 '+path)
             if len(data)<100000: errors.append('visual: 画像データが異常に小さい '+path)
     if 'data-year="2040"' not in v: errors.append('visual: 未来年不足')
     for src in ['city.sodegaura.lg.jp/soshiki/tokei/basurosenitiran.html','city.sodegaura.lg.jp/site/mayor/densi-siminnokoe.html']:
@@ -112,7 +112,7 @@ if Path('index.html').exists():
     if 'href="./ax-visual.html"' not in s: errors.append('index: visual導線なし')
 if Path('sw.js').exists():
     swv=Path('sw.js').read_text(encoding='utf-8')
-    for f in ['./ax-visual.html','./assets/ax-smartphone-reference.png','./assets/ax-future-concept-reference.png']:
+    for f in ['./ax-visual.html','./assets/ax-smartphone-reference.webp','./assets/ax-future-concept-reference.webp']:
         if f not in swv: errors.append('PWA: 参照画像を含むshell不足: '+f)
 if errors:
     print('VALIDATION FAILED')
